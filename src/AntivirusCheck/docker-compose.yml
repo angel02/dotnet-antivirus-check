@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  antiviruscheck.api:
+    image: ${DOCKER_REGISTRY-}antiviruscheckapi
+    build:
+      context: .
+      dockerfile: AntivirusCheck.Api/Dockerfile
+
+  antiviruscheck.worker:
+    image: ${DOCKER_REGISTRY-}antiviruscheckworker
+    build:
+      context: .
+      dockerfile: AntivirusCheck.Worker/Dockerfile
+
