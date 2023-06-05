@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace AntivirusCheck.Shared.Contracts
 {
-    internal class FileScanResult
+    public class FileScanResult
     {
+        public string FullPath { get; set; }
+        public string FileName { get; set; }
+        public bool IsClean { get; set; }
+        public string Message { get; set; }
     }
 }
