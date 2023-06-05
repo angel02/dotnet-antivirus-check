@@ -3,13 +3,58 @@ version: '3.4'
 services:
   antiviruscheck.api:
     image: ${DOCKER_REGISTRY-}antiviruscheckapi
+    hostname: api
+    container_name: api
+    environment:
+        - RabbitMQ_Address=rabbitmq://host.docker.internal
+        - RabbitMQ_User=guest
+        - RabbitMQ_Pass=guest
+        - FilePath=/filedata/
     build:
       context: .
       dockerfile: AntivirusCheck.Api/Dockerfile
+    volumes:
+        - files-directory:/filedata/
+
 
   antiviruscheck.worker:
     image: ${DOCKER_REGISTRY-}antiviruscheckworker
+    hostname: worker
+    container_name: worker
+    environment:
+        - RabbitMQ_Address=rabbitmq://host.docker.internal
+        - RabbitMQ_User=guest
+        - RabbitMQ_Pass=guest
+        - FilePath=/filedata/
+        - ClamAV_Address=host.docker.internal
+        - ClamAV_Port=13310
     build:
       context: .
       dockerfile: AntivirusCheck.Worker/Dockerfile
+    volumes:
+        - files-directory:/filedata/
+  
 
+  ClamAV:
+    image: clamav/clamav:latest
+    hostname: clamavserver
+    container_name: clamavserver
+    ports:
+        - 13310:3310
+        - 7357:7357
+    
+
+  RabbitMQServer:
+    image: rabbitmq:3-management
+    container_name: RabbitMQServer
+    ports:
+        - 15672:15672
+        - 5672:5672
+ 
+
+
+
+volumes:
+  files-directory:
+    external: false
+  
