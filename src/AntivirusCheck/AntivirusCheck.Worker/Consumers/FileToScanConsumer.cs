@@ -47,6 +47,8 @@ namespace AntivirusCheck.Worker.Consumers
                     logger.LogInformation("Something else happened");
                     break;
             }
+
+            await context.Publish<FileScanResult>(fileScanResponse);
         }
     }
 }
