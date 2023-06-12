@@ -4,7 +4,6 @@ using MassTransit;
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
-        //services.AddHostedService<Worker>();
         services.AddMassTransit(config =>
         {
             config.AddConsumer<FileToScanConsumer>();
